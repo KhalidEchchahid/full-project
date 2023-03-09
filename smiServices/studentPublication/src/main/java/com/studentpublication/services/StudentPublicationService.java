@@ -1,2 +1,4 @@
-package com.studentpublication.services;public interface StudentPublicationService {
+package com.studentpublication.services;
+
+public interface StudentPublicationService {
 }

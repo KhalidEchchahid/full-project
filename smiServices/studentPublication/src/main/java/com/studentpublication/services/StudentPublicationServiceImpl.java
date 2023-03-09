@@ -1,2 +1,4 @@
-package com.studentpublication.services;public class StudentPublicationServiceImpl {
+package com.studentpublication.services;
+
+public class StudentPublicationServiceImpl implements StudentPublicationService{
 }

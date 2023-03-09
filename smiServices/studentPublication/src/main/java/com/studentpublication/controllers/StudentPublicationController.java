@@ -1,2 +1,4 @@
-package com.studentpublication.controllers;public class StudentPublicationController {
+package com.studentpublication.controllers;
+
+public class StudentPublicationController {
 }
