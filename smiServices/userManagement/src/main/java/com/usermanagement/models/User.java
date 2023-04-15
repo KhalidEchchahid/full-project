@@ -32,26 +32,29 @@ public class User implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "user_id_sequence"
     )
-    private Integer id ;
-    @NotBlank
+    private Long id ;
+
     @Size(max = 20)
     private String firstName ;
-    @NotBlank
+
     @Size(max = 20)
     private String lastName;
     @Size(max = 5)
     private String semester;
-    @NotBlank
+
     @Size(max = 50)
     @Email
     @Column(unique = true)
     private String email ;
-    @NotBlank
+
     @Size(max = 120)
     private String password ;
 
     @Enumerated(EnumType.STRING)
     private Role role ;
+
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

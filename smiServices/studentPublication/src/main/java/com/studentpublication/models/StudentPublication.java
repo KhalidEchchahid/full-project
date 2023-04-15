@@ -1,6 +1,8 @@
 package com.studentpublication.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@JsonInclude
 @Table(name = "student_publication")
 public class StudentPublication {
     @Id
@@ -28,21 +31,28 @@ public class StudentPublication {
     )
     private Long id ;
 
+
     @Column(name="title")
     private String title;
     @Lob
     @Column(name="pdf_file")
     private byte[] pdfFile ;
+
     @Column(name="description")
     private String description;
     @Column(name="tags")
     private String tags;
     @Column(name="createdAt")
     private Date createdAt;
-
-    @OneToMany(mappedBy = "studentPublication" , cascade = CascadeType.ALL ,orphanRemoval = true)
+    @Column(name="user_id")
+    private Long userId;
+    @Column(name="creator_name")
+    private String creatorName ;
+    @OneToMany(mappedBy = "studentPublication" , cascade = CascadeType.ALL ,orphanRemoval = true ,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("studentPublication")
     private List<Comment> comments = new ArrayList<>();
-    @OneToMany(mappedBy = "studentPublication" , cascade = CascadeType.ALL ,orphanRemoval = true)
+    @OneToMany(mappedBy = "studentPublication" , cascade = CascadeType.ALL ,orphanRemoval = true,fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("studentPublication")
     private List<Like> likes = new ArrayList<>();
 
 }
