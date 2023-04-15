@@ -1,0 +1,70 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: ApiGateway
+  datasource:
+    url: jdbc:postgresql://localhost:5433/users
+    username: postgres
+    password: password
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    open-in-view: false
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: StudentPublication
+          uri: lb://STUDENTPUBLICATION
+          predicates:
+            - Path=/api/v1/studentPublications/**
+          filters:
+            - AuthenticationFilter
+
+        - id: ProfessorArticle
+          uri: lb://PROFESSORARTICLE
+          predicates:
+            - Path=/api/v1/professor-articles/**
+          filters:
+            - AuthenticationFilter
+
+        - id: announcement
+          uri: lb://ANNOUNCEMENT
+          predicates:
+            - Path=/api/v1/announcements/**
+          filters:
+            - AuthenticationFilter
+
+        - id: userManagement
+          uri: lb://USERMANAGEMENT
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: userManagement
+          uri: lb://USERMANAGEMENT
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - AuthenticationFilter
+
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

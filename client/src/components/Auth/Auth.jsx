@@ -1,9 +1,11 @@
-import React , {useState , useEffect} from 'react'
+import React , {useState } from 'react'
 import { Avatar , Button , Paper , Grid , Typography , Container} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Input from './Input';
-import { useNavigate } from "react-router-dom";
-import './style.css';
+import {redirect , useNavigate } from "react-router-dom";
+import {useDispatch} from 'react-redux'
+import { signin , signup } from '../../actions/auth';
+import {getCurrentUserDetails} from '../../actions/user'
 
 const myStyle = {
   
@@ -34,6 +36,7 @@ const initialeState = {
     firstName : '' ,
     lastName : '',
     email :'',
+    semester : '',
     password : '' ,
     confirmPassword : ''
 }
@@ -42,15 +45,25 @@ const Auth = () => {
     const [isSignUp , setIsSignUp ] = useState(false) ; 
     const [showPassword , setShowPasswod] = useState(false) ;
     const navigate = useNavigate();
-    const handleShowPassword = () => setShowPasswod((prev) => !prev) ;
+    const dispatch = useDispatch();
     const [formData , setFormData] = useState(initialeState);
 
 
+    const handelSubmit = (e) => {
+      e.preventDefault();
+      if(isSignUp){
+          dispatch(signup(formData , navigate))
+      }else{
+          dispatch(signin(formData , navigate))
+      }
+      
+  };
 
     const handelChange = (event) =>{
         setFormData({...formData , [event.target.name] : event.target.value})
     };
 
+    const handleShowPassword = () => setShowPasswod((prev) => !prev) ;
 
     const switchMode =()=>{
       setIsSignUp((prev)=> !prev) ;
@@ -60,21 +73,19 @@ const Auth = () => {
 
   return (
    
-    <Container component='main' maxWidth='xs'>
+    <Container component='main' maxWidth='xs' sx={{ minHeight: "70vh"}}>
         <Paper style={myStyle.paper} elevation={3}>
             <Avatar style={myStyle.avatar}>
                 <LockOutlinedIcon />
             </Avatar>
             <Typography variant='h5'>{isSignUp ? 'Sign Up' : 'Sign In'}</Typography>
-            {/* onSubmit={handelSubmit}   hna hadi ghadi dar fl form  */}
-             <form  style={myStyle.form} > 
-             
+             <form  style={myStyle.form} onSubmit={handelSubmit}> 
                 <Grid container spacing={3}>
                     { isSignUp && (
                         <>
                         <Input name='firstName' label='First Name' handelChange={handelChange} autoFocus half />
                         <Input name='lastName' label='Last Name' handelChange={handelChange}  half />
-                            
+                        <Input name='semester' label='Semester' handelChange={handelChange} />
                         </>
                     )}
                     <Input name='email' label='Email Adress' handelChange={handelChange} type='email' />
@@ -88,7 +99,6 @@ const Auth = () => {
                     </Grid>
                 </Grid>
             </form>
-            
         </Paper>
     </Container>
    
