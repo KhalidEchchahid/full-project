@@ -109,8 +109,8 @@ After cloning, navigate into each folder separately to set up and run the corres
 #### **For the Backend:**  
 ```bash
 cd smiServices
-mvn spring-boot:run 
 ```
+run each service . 
 #### **For the Frontend (Web App):**  
 ```bash
 cd ../client
