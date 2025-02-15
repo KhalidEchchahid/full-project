@@ -11,23 +11,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @JsonInclude
-@Table(name = "letter_response")
-public class LetterResponse {
+@Table(name = "letter")
+public class Letter {
     @Id
     @SequenceGenerator(
-            name = "letter_request_id_sequence",
-            sequenceName = "letter_request_id_sequence",
+            name = "letter_id_sequence",
+            sequenceName = "letter_id_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "letter_request_id_sequence"
+            generator = "letter_id_sequence"
     )
     private Long id;
-    @Column(name = "student_id")
-    private Long studentId;
-    @Column(name = "professor_id")
-    private Long professorId;
+
+    @OneToOne
+    private LetterRequest letterRequest;
 
     @Lob
     @Column(name="pdf_file")
